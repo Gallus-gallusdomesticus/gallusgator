@@ -3,15 +3,13 @@ package config
 import (
 	"encoding/json"
 	"os"
-	"path/filepath"
 )
 
 func Read() (Config, error) {
-	homedir, err := os.UserHomeDir()
+	jsonpath, err := getConfigFilePath()
 	if err != nil {
 		return Config{}, err
 	}
-	jsonpath := filepath.Join(homedir, ".gatorconfig.json")
 
 	jsonData, err := os.ReadFile(jsonpath)
 	if err != nil {
