@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"os"
+	"time"
+
+	"github.com/Gallus-gallusdomesticus/gallusgator/internal/database"
+	"github.com/google/uuid"
 )
 
 type command struct {
@@ -21,6 +27,35 @@ func handlerLogin(s *state, cmd command) error { //login handler function
 	}
 
 	fmt.Printf("User has been set")
+	return nil
+}
+
+func handlerRegister(s *state, cmd command) error {
+	if len(cmd.args) == 0 { //expect a single argument
+		return errors.New("register required a username")
+
+	}
+
+	ctx := context.Background()
+
+	userParam := database.CreateUserParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		Name:      cmd.args[0],
+	}
+
+	user, err := s.db.CreateUser(ctx, userParam)
+	if err != nil {
+		fmt.Println("User already exist", err)
+		os.Exit(1)
+	}
+
+	if err := s.cfg.SetUser(cmd.args[0]); err != nil { //use state access to config struct to set username
+		return err
+	}
+
+	fmt.Println("User is successfully created", user)
 	return nil
 }
 
