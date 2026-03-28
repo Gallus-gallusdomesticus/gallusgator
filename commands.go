@@ -18,11 +18,11 @@ type command struct {
 
 func handlerLogin(s *state, cmd command) error { //login handler function
 	if len(cmd.args) == 0 { //expect a single argument
-		return errors.New("login required a username argument")
+		return errors.New("Login required a username argument.")
 
 	}
 
-	ctx := context.Background()              //add context for s.db.CreateUser
+	ctx := context.Background()              //add context for s.db.SetUser
 	_, err := s.db.GetUser(ctx, cmd.args[0]) //check if the user exist
 	if err != nil {
 		fmt.Println(cmd.args[0], "is not exist")
@@ -33,13 +33,13 @@ func handlerLogin(s *state, cmd command) error { //login handler function
 		return err
 	}
 
-	fmt.Println("User has been set")
+	fmt.Println("User has been set.")
 	return nil
 }
 
 func handlerRegister(s *state, cmd command) error { //register handler function
 	if len(cmd.args) == 0 { //expect a single argument
-		return errors.New("register required a username")
+		return errors.New("Register required a username.")
 
 	}
 
@@ -63,6 +63,18 @@ func handlerRegister(s *state, cmd command) error { //register handler function
 	}
 
 	fmt.Println("User is successfully created", user) //print the user log
+	return nil
+}
+
+func handlerReset(s *state, cmd command) error { //register reset function
+	ctx := context.Background() //add context for s.db.ResetUser
+
+	if err := s.db.ResetAll(ctx); err != nil {
+		fmt.Println("Database reset failed!", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("Database reset successful.")
 	return nil
 }
 

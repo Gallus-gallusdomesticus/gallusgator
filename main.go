@@ -27,9 +27,10 @@ func main() {
 
 	progCmds.register("login", handlerLogin)       //register login handler function
 	progCmds.register("register", handlerRegister) //register register handler function
+	progCmds.register("reset", handlerReset)       //register reset handler function
 
 	if len(os.Args) < 2 { //check lengths of the command
-		log.Fatal("not enough arguments provided")
+		log.Fatal("Not enough arguments provided.")
 	}
 
 	cmdName := os.Args[1] //the command name
