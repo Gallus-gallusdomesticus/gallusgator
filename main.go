@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"os"
 
 	"github.com/Gallus-gallusdomesticus/gallusgator/internal/config"
+	"github.com/Gallus-gallusdomesticus/gallusgator/internal/database" //importing for side effect not used directly
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -40,8 +43,19 @@ func main() {
 		log.Fatal(err)
 	} //run the program
 
+	db, err := sql.Open("postgres", cfg.DbURL) //load in database URL to config struct
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dbQueries := database.New(db) //make a new database queries using generated database package
+
+	progState.db = dbQueries
+
 }
 
 type state struct {
-	cfg *config.Config //struct that hold pointer to config (to give our handler the application state)
+	db  *database.Queries //struct that hold the database queries
+	cfg *config.Config    //struct that hold pointer to config (to give our handler the application state)
 }
