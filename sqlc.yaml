@@ -1,0 +1,10 @@
+#tell sqlc to look into sql/schema for schema structure, sql/queries directory for queries, and generate the go in internal/database directory
+
+version: "2"
+sql:
+  - schema: "sql/schema"
+    queries: "sql/queries"
+    engine: "postgresql"
+    gen:
+      go:
+        out: "internal/database"
