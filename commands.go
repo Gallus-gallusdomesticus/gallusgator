@@ -22,6 +22,13 @@ func handlerLogin(s *state, cmd command) error { //login handler function
 
 	}
 
+	ctx := context.Background()              //add context for s.db.CreateUser
+	_, err := s.db.GetUser(ctx, cmd.args[0]) //check if the user exist
+	if err != nil {
+		fmt.Println(cmd.args[0], "is not exist")
+		os.Exit(1)
+	}
+
 	if err := s.cfg.SetUser(cmd.args[0]); err != nil { //use state access to config struct to set username
 		return err
 	}
