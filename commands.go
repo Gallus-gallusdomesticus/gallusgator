@@ -30,22 +30,22 @@ func handlerLogin(s *state, cmd command) error { //login handler function
 	return nil
 }
 
-func handlerRegister(s *state, cmd command) error {
+func handlerRegister(s *state, cmd command) error { //register handler function
 	if len(cmd.args) == 0 { //expect a single argument
 		return errors.New("register required a username")
 
 	}
 
-	ctx := context.Background()
+	ctx := context.Background() //add context for s.db.CreateUser
 
-	userParam := database.CreateUserParams{
-		ID:        uuid.New(),
+	userParam := database.CreateUserParams{ //user parameter for s.db.CreateUser
+		ID:        uuid.New(), //new uuid
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 		Name:      cmd.args[0],
 	}
 
-	user, err := s.db.CreateUser(ctx, userParam)
+	user, err := s.db.CreateUser(ctx, userParam) //createuser function to get the user log
 	if err != nil {
 		fmt.Println("User already exist", err)
 		os.Exit(1)
@@ -55,7 +55,7 @@ func handlerRegister(s *state, cmd command) error {
 		return err
 	}
 
-	fmt.Println("User is successfully created", user)
+	fmt.Println("User is successfully created", user) //print the user log
 	return nil
 }
 

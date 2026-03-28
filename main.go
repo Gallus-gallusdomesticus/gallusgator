@@ -25,7 +25,8 @@ func main() {
 		handlers: make(map[string]func(*state, command) error),
 	}
 
-	progCmds.register("login", handlerLogin) //register login handler function
+	progCmds.register("login", handlerLogin)       //register login handler function
+	progCmds.register("register", handlerRegister) //register register handler function
 
 	if len(os.Args) < 2 { //check lengths of the command
 		log.Fatal("not enough arguments provided")
