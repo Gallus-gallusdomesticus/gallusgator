@@ -40,10 +40,6 @@ func main() {
 		args: cmdArg,
 	}
 
-	if err := progCmds.run(progState, cmd); err != nil {
-		log.Fatal(err)
-	} //run the program
-
 	db, err := sql.Open("postgres", cfg.DbURL) //load in database URL to config struct
 
 	if err != nil {
@@ -53,6 +49,10 @@ func main() {
 	dbQueries := database.New(db) //make a new database queries using generated database package
 
 	progState.db = dbQueries
+
+	if err := progCmds.run(progState, cmd); err != nil {
+		log.Fatal(err)
+	} //run the program
 
 }
 
