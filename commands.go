@@ -33,7 +33,7 @@ func handlerLogin(s *state, cmd command) error { //login handler function
 		return err
 	}
 
-	fmt.Printf("User has been set")
+	fmt.Println("User has been set")
 	return nil
 }
 
