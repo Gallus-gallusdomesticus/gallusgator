@@ -27,6 +27,7 @@ func main() {
 
 	progCmds.register("login", handlerLogin)       //register login handler function
 	progCmds.register("register", handlerRegister) //register register handler function
+	progCmds.register("users", handlerUsers)       //register users handler function
 	progCmds.register("reset", handlerReset)       //register reset handler function
 
 	if len(os.Args) < 2 { //check lengths of the command

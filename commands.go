@@ -66,10 +66,37 @@ func handlerRegister(s *state, cmd command) error { //register handler function
 	return nil
 }
 
+func handlerUsers(s *state, cmd command) error { //register users function
+
+	ctx := context.Background() //add context for s.db.GetUsers
+
+	users, err := s.db.GetUsers(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	if len(users) == 0 {
+		fmt.Println("No user registered.")
+	}
+
+	for _, user := range users {
+		if s.cfg.CurrentUserName == user {
+			fmt.Println("*", user, "(current)")
+		} else {
+			fmt.Println("*", user)
+		}
+
+	}
+
+	return nil
+
+}
+
 func handlerReset(s *state, cmd command) error { //register reset function
 	ctx := context.Background() //add context for s.db.ResetUser
 
-	if err := s.db.ResetAll(ctx); err != nil {
+	if err := s.db.ResetAll(ctx); err != nil { //resetall function
 		fmt.Println("Database reset failed!", err)
 		os.Exit(1)
 	}
