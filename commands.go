@@ -70,21 +70,21 @@ func handlerUsers(s *state, cmd command) error { //register users function
 
 	ctx := context.Background() //add context for s.db.GetUsers
 
-	users, err := s.db.GetUsers(ctx)
+	users, err := s.db.GetUsers(ctx) //get users list
 
 	if err != nil {
 		return err
 	}
 
-	if len(users) == 0 {
+	if len(users) == 0 { //check if there is user registered or not
 		fmt.Println("No user registered.")
 	}
 
 	for _, user := range users {
-		if s.cfg.CurrentUserName == user {
+		if s.cfg.CurrentUserName == user { //if it is the current login user
 			fmt.Println("*", user, "(current)")
 		} else {
-			fmt.Println("*", user)
+			fmt.Println("*", user) //print the user list
 		}
 
 	}
