@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-//function to rread the json file in ~/.gatorconfig.json
+//function to read the json file in ~/.gatorconfig.json
 
 func Read() (Config, error) {
 	jsonpath, err := getConfigFilePath() //get the file path
