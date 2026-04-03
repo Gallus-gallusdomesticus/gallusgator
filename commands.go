@@ -105,6 +105,20 @@ func handlerReset(s *state, cmd command) error { //register reset function
 	return nil
 }
 
+func handlerAgg(s *state, cmd command) error { //register agg function
+	ctx := context.Background()
+	feed := "https://www.wagslane.dev/index.xml"
+
+	rss, err := fetchFeed(ctx, feed) //fetchFeed function
+	if err != nil {
+		fmt.Println("Fetch RSS failed!", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("%+v\n", rss)
+	return nil
+}
+
 type commands struct { //hold the commands the CLI can handle
 	handlers map[string]func(*state, command) error //map of command name (the key is the command name while the value is the handler function)
 }

@@ -29,6 +29,7 @@ func main() {
 	progCmds.register("register", handlerRegister) //register register handler function
 	progCmds.register("users", handlerUsers)       //register users handler function
 	progCmds.register("reset", handlerReset)       //register reset handler function
+	progCmds.register("agg", handlerAgg)           //register agg handler function
 
 	if len(os.Args) < 2 { //check lengths of the command
 		log.Fatal("Not enough arguments provided.")
