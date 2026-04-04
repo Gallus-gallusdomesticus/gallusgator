@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 )
 
 func handlerAgg(s *state, cmd command) error { //register agg function
@@ -12,8 +11,7 @@ func handlerAgg(s *state, cmd command) error { //register agg function
 
 	rss, err := fetchFeed(ctx, feed) //fetchFeed function
 	if err != nil {
-		fmt.Println("Fetch RSS failed!", err)
-		os.Exit(1)
+		return fmt.Errorf("Fetch RSS failed! %w", err)
 	}
 
 	fmt.Printf("%+v\n", rss)

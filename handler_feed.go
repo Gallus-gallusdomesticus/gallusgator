@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/Gallus-gallusdomesticus/gallusgator/internal/database"
@@ -13,15 +12,14 @@ import (
 func handlerFeed(s *state, cmd command) error {
 
 	if len(cmd.args) < 2 { //handlerFeed need both name and url
-		fmt.Println("Command require name and URL.")
-		os.Exit(1)
+		return fmt.Errorf("Usage: %s <name> <url>", cmd.name)
 	}
 
 	ctx := context.Background()
 
 	currentuser, err := s.db.GetUser(ctx, s.cfg.CurrentUserName) //get the currently login user data
 	if err != nil {
-		return err
+		return fmt.Errorf("Cannot find currently login user: %w", err)
 	}
 
 	feedParam := database.CreateFeedParams{ //make the parameter for the command
@@ -35,10 +33,11 @@ func handlerFeed(s *state, cmd command) error {
 
 	feed, err := s.db.CreateFeed(ctx, feedParam)
 	if err != nil {
-		return err
+		return fmt.Errorf("Fail to create feed: %w", err)
 	}
 
-	fmt.Println(feed)
+	printFeed(feed, currentuser)
+	fmt.Println("Feed successfully added.")
 	return nil
 
 }
@@ -48,20 +47,27 @@ func handlerFeeds(s *state, cmd command) error {
 
 	feeds, err := s.db.GetFeeds(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to get feeds: %w", err)
 	}
 
 	for _, feed := range feeds {
 		user, err := s.db.GetUserFromID(ctx, feed.UserID)
 		if err != nil {
-			return err
+			return fmt.Errorf("Failed to get user: %w", err)
 		}
 
-		fmt.Println("==================================")
-		fmt.Println("Name	:", user.Name)
-		fmt.Println("Feed	:", feed.Name)
-		fmt.Println("URL	 :", feed.Url)
+		printFeed(feed, user)
 	}
 
 	return nil
+}
+
+func printFeed(feed database.Feed, user database.User) {
+	fmt.Println("+++FEED STRUCT+++++++++++++++++++++++")
+	fmt.Println("ID			:", feed.ID)
+	fmt.Println("Feed		  :", feed.Name)
+	fmt.Println("URL		   :", feed.Url)
+	fmt.Println("Created at	:", feed.CreatedAt)
+	fmt.Println("Updated at    :", feed.UpdatedAt)
+	fmt.Println("User		  :", user.Name)
 }
