@@ -45,3 +45,30 @@ func handlerFollow(s *state, cmd command) error {
 	return nil
 
 }
+
+func handlerFollowing(s *state, cmd command) error {
+	ctx := context.Background()
+
+	user, err := s.db.GetUser(ctx, s.cfg.CurrentUserName)
+	if err != nil {
+		return fmt.Errorf("Current user not found: %w", err)
+	}
+
+	follows, err := s.db.GetFeedFollows(ctx, user.ID)
+	if err != nil {
+		return fmt.Errorf("Current user ID not found: %w", err)
+	}
+
+	fmt.Printf("Current user name: %s", s.cfg.CurrentUserName)
+	fmt.Printf("Following:")
+	if len(follows) == 0 {
+		fmt.Printf("NO FEEDS FOLLOWED!")
+	}
+
+	for idx, follow := range follows {
+		fmt.Printf("%d. %s", idx, follow.FeedName)
+
+	}
+
+	return nil
+}
