@@ -10,7 +10,7 @@ import (
 )
 
 func handlerLogin(s *state, cmd command) error { //login handler function
-	if len(cmd.args) == 0 { //expect a single argument
+	if len(cmd.args) != 1 { //expect a single argument
 		return fmt.Errorf("Usage: %s <name>", cmd.name)
 
 	}
@@ -30,7 +30,7 @@ func handlerLogin(s *state, cmd command) error { //login handler function
 }
 
 func handlerRegister(s *state, cmd command) error { //register handler function
-	if len(cmd.args) == 0 { //expect a single argument
+	if len(cmd.args) != 1 { //expect a single argument
 		return fmt.Errorf("Usage: %s <username>", cmd.name)
 
 	}
@@ -87,8 +87,8 @@ func handlerUsers(s *state, cmd command) error { //register users function
 
 func printUser(user database.User) {
 	fmt.Println("===USER STRUCT=======================")
-	fmt.Println("ID			:", user.ID)
-	fmt.Println("Name		  :", user.Name)
-	fmt.Println("Created at	:", user.CreatedAt)
+	fmt.Println("ID	      :", user.ID)
+	fmt.Println("Name          :", user.Name)
+	fmt.Println("Created at    :", user.CreatedAt)
 	fmt.Println("Updated at    :", user.UpdatedAt)
 }

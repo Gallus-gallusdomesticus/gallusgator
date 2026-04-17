@@ -11,7 +11,7 @@ import (
 
 func handlerFeed(s *state, cmd command, user database.User) error {
 
-	if len(cmd.args) < 2 { //handlerFeed need both name and url
+	if len(cmd.args) != 2 { //handlerFeed need both name and url
 		return fmt.Errorf("Usage: %s <name> <url>", cmd.name)
 	}
 
@@ -31,7 +31,7 @@ func handlerFeed(s *state, cmd command, user database.User) error {
 		return fmt.Errorf("Fail to create feed: %w", err)
 	}
 
-	printFeed(feed, user)
+	printFeedUser(feed, user)
 	fmt.Println("Feed successfully added.")
 
 	followParam := database.CreateFeedFollowsParams{ //create parameter for feed follow
@@ -67,18 +67,18 @@ func handlerFeeds(s *state, cmd command) error {
 			return fmt.Errorf("Failed to get user: %w", err)
 		}
 
-		printFeed(feed, user)
+		printFeedUser(feed, user)
 	}
 
 	return nil
 }
 
-func printFeed(feed database.Feed, user database.User) {
+func printFeedUser(feed database.Feed, user database.User) {
 	fmt.Println("+++FEED STRUCT+++++++++++++++++++++++")
-	fmt.Println("ID			:", feed.ID)
+	fmt.Println("ID		  :", feed.ID)
 	fmt.Println("Feed		  :", feed.Name)
-	fmt.Println("URL		   :", feed.Url)
-	fmt.Println("Created at	:", feed.CreatedAt)
-	fmt.Println("Updated at    :", feed.UpdatedAt)
+	fmt.Println("URL		  :", feed.Url)
+	fmt.Println("Created at	  :", feed.CreatedAt)
+	fmt.Println("Updated at	  :", feed.UpdatedAt)
 	fmt.Println("User		  :", user.Name)
 }
