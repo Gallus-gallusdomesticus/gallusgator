@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func handlerFeed(s *state, cmd command) error {
+func handlerFeed(s *state, cmd command, user database.User) error {
 
 	if len(cmd.args) < 2 { //handlerFeed need both name and url
 		return fmt.Errorf("Usage: %s <name> <url>", cmd.name)
@@ -17,18 +17,13 @@ func handlerFeed(s *state, cmd command) error {
 
 	ctx := context.Background()
 
-	currentuser, err := s.db.GetUser(ctx, s.cfg.CurrentUserName) //get the currently login user data
-	if err != nil {
-		return fmt.Errorf("Cannot find currently login user: %w", err)
-	}
-
 	feedParam := database.CreateFeedParams{ //make the parameter for the command
 		ID:        uuid.New(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 		Name:      cmd.args[0],
 		Url:       cmd.args[1],
-		UserID:    currentuser.ID,
+		UserID:    user.ID,
 	}
 
 	feed, err := s.db.CreateFeed(ctx, feedParam)
@@ -36,14 +31,14 @@ func handlerFeed(s *state, cmd command) error {
 		return fmt.Errorf("Fail to create feed: %w", err)
 	}
 
-	printFeed(feed, currentuser)
+	printFeed(feed, user)
 	fmt.Println("Feed successfully added.")
 
 	followParam := database.CreateFeedFollowsParams{ //create parameter for feed follow
 		ID:        uuid.New(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-		UserID:    currentuser.ID,
+		UserID:    user.ID,
 		FeedID:    feed.ID,
 	}
 

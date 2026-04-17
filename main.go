@@ -25,15 +25,15 @@ func main() {
 		handlers: make(map[string]func(*state, command) error),
 	}
 
-	progCmds.register("login", handlerLogin)         //register login handler function
-	progCmds.register("register", handlerRegister)   //register register handler function
-	progCmds.register("users", handlerUsers)         //register users handler function
-	progCmds.register("reset", handlerReset)         //register reset handler function
-	progCmds.register("agg", handlerAgg)             //register agg handler function
-	progCmds.register("addfeed", handlerFeed)        //register addfeed handler function
-	progCmds.register("feeds", handlerFeeds)         //register feeds handler function
-	progCmds.register("follow", handlerFollow)       //register follow handler function
-	progCmds.register("following", handlerFollowing) //register following handler function
+	progCmds.register("login", handlerLogin)                             //register login handler function
+	progCmds.register("register", handlerRegister)                       //register register handler function
+	progCmds.register("users", handlerUsers)                             //register users handler function
+	progCmds.register("reset", handlerReset)                             //register reset handler function
+	progCmds.register("agg", handlerAgg)                                 //register agg handler function
+	progCmds.register("feeds", handlerFeeds)                             //register feeds handler function
+	progCmds.register("addfeed", middlewareLoggedIn(handlerFeed))        //register addfeed handler function
+	progCmds.register("follow", middlewareLoggedIn(handlerFollow))       //register follow handler function
+	progCmds.register("following", middlewareLoggedIn(handlerFollowing)) //register following handler function
 
 	if len(os.Args) < 2 { //check lengths of the command
 		log.Fatal("Not enough arguments provided.")
