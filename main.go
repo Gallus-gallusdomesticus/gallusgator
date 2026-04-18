@@ -37,6 +37,7 @@ func main() {
 	progCmds.register("follow", middlewareLoggedIn(handlerFollow))       //register follow handler function
 	progCmds.register("following", middlewareLoggedIn(handlerFollowing)) //register following handler function
 	progCmds.register("unfollow", middlewareLoggedIn(handlerUnfollow))   //register unfollow handler function
+	progCmds.register("browse", middlewareLoggedIn(handlerBrowse))       //register browse handler function
 
 	if len(os.Args) < 2 { //check lengths of the command
 		log.Fatal("Not enough arguments provided.")

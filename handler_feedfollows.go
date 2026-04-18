@@ -10,7 +10,7 @@ import (
 )
 
 func handlerFollow(s *state, cmd command, user database.User) error {
-	if len(cmd.args) != 1 { //handlerFeed need url
+	if len(cmd.args) != 1 { //handlerFollow need url
 		return fmt.Errorf("Usage: %s <url>", cmd.name)
 	}
 
